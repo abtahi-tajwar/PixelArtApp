@@ -13,7 +13,6 @@ var eraser = document.getElementById('erase')
 var submit = document.getElementById('submit')
 console.log(submit)
 
-
 var generatedCode = `
     void drawRect(int x, int y, int size, int r, int g, int b) {
         glColor3ub(r/255, g/255, b/255);
@@ -24,8 +23,7 @@ var generatedCode = `
         glVertex2i(x+size, y);
         glEnd();
     }
-
-`;
+    `;
 
 let board = []
 const dimension = pixels
@@ -87,19 +85,23 @@ function generateCode() {
                 console.log(board[x+y*dimension].getColor())
                 let color = hexToRgb(board[x+y*dimension].getColor())
                 console.log(color)
-                generatedCode += `drawRect(${x*size}, ${dimensionSize-y*size}, ${size}, ${color.r}, ${color.g}, ${color.b});
-                `
+                generatedCode += `
+    drawRect(${x*size}, ${dimensionSize-y*size}, ${size}, ${color.r}, ${color.g}, ${color.b});`
             }
             
         }
     }
 }
+document.querySelector('.popup button').addEventListener('click', function() {
+    document.querySelector('.popup').style.display = 'none'
+} )
 submit.addEventListener('click', (e) => {
     e.preventDefault();
     generateCode();
+    document.getElementById('popup').style.display = 'block'
+    document.getElementById('codeViewer').innerHTML = generatedCode
     console.log(generatedCode);
 })
-
 
 
 // for(var i = 0; i < 32; i++) {
