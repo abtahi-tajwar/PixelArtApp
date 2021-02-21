@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" href="icon/comic-book.png" type="image/icon type">
+    <link rel="stylesheet" href="style.css">
+
+    <title>Pixel Art App</title>
+</head>
+<body>
+    <div class="form">
+        <form action="">
+            <label for="color">Select Color</label>
+            <input id="color" type="color" name="color">
+            <label for="erase">Check to turn of eraser mode</label>
+            <input id="erase" type="checkbox">
+            <input type="submit" value="Generate Code" id="submit">
+        </form>
+    </div>
+
+    <canvas height="512" width="512"></canvas>
+    <script src="pixel.js"></script>
+    <script src="canvas.js"></script>
+</body>
+</html>
