@@ -15,7 +15,7 @@ console.log(submit)
 
 var generatedCode = `
     void drawRect(int x, int y, int size, int r, int g, int b) {
-        glColor3ub(r/255, g/255, b/255);
+        glColor3ub(r, g, b);
         glBegin(GL_QUADS);
         glVertex2i(x, y);
         glVertex2i(x, y-size);
@@ -66,7 +66,10 @@ for(let i = 0; i < dimension; i++) {
     }
 }
 
-canvas.addEventListener('mousedown', function(event) {
+let mouseState = false;
+
+canvas.addEventListener('mousedown', () => {
+    mouseState = true;
     let position = getMousePos(canvas, event);
     let x = Math.floor(position.x/size)
     let y = Math.floor(position.y/size)
@@ -74,6 +77,22 @@ canvas.addEventListener('mousedown', function(event) {
         board[x+y*dimension].draw(color.value)
     } else {
         board[x+y*dimension].erase()
+    }
+})
+canvas.addEventListener('mouseup', () => {
+    mouseState = false;
+})
+
+canvas.addEventListener('mousemove', function(event) {
+    if(mouseState) {
+        let position = getMousePos(canvas, event);
+        let x = Math.floor(position.x/size)
+        let y = Math.floor(position.y/size)
+        if(!eraser.checked) {
+            board[x+y*dimension].draw(color.value)
+        } else {
+            board[x+y*dimension].erase()
+        }
     }
     
 })
@@ -102,6 +121,7 @@ submit.addEventListener('click', (e) => {
     document.getElementById('codeViewer').innerHTML = generatedCode
     console.log(generatedCode);
 })
+
 
 
 // for(var i = 0; i < 32; i++) {
