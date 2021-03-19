@@ -10,27 +10,21 @@ canvas.height = dimensionSize;
 canvas.width = dimensionSize;
 var color = document.getElementById('color')
 var eraser = document.getElementById('erase')
+var lineToggle = document.getElementById('line')
 var submit = document.getElementById('submit')
-console.log(submit)
 
-var generatedCode = `
-    void drawRect(int x, int y, int size, int r, int g, int b) {
-        glColor3ub(r, g, b);
-        glBegin(GL_QUADS);
-        glVertex2i(x, y);
-        glVertex2i(x, y-size);
-        glVertex2i(x+size, y-size);
-        glVertex2i(x+size, y);
-        glEnd();
-    }
-    `;
+var generatedCode = '';
 
-let board = []
 const dimension = pixels
 const size = dimensionSize/dimension;
 const primaryColor = '#fafafa';
 const secondaryColor = '#dedede';
 let eraserMode = true;
+
+let line
+
+const artboard = new Artboard(dimensionSize, dimension);
+artboard.initBoard();
 
 function getMousePos(canvas, evt) {
     var rect = canvas.getBoundingClientRect();
@@ -40,31 +34,35 @@ function getMousePos(canvas, evt) {
     };
   }
 
-  function hexToRgb(hex) {
+function hexToRgb(hex) {
     // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
     var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
     hex = hex.replace(shorthandRegex, function(m, r, g, b) {
-      return r + r + g + g + b + b;
+        return r + r + g + g + b + b;
     });
-  
+
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16)
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
     } : null;
-  }
-
-for(let i = 0; i < dimension; i++) {
-    for(let j = 0; j < dimension; j++) {
-        if((i+j)%2 == 0) {
-            board.push(new Pixel(j*size, i*size, size, primaryColor, c))
-        } else {
-            board.push(new Pixel(j*size, i*size, size, secondaryColor, c))
-        }
-        
-    }
 }
+
+// function initBoard()
+// {
+//     for(let i = 0; i < dimension; i++) {
+//         for(let j = 0; j < dimension; j++) {
+//             if((i+j)%2 == 0) {
+//                 board.push(new Pixel(j*size, i*size, size, primaryColor, c))
+//             } else {
+//                 board.push(new Pixel(j*size, i*size, size, secondaryColor, c))
+//             }
+            
+//         }
+//     }
+// }
+// initBoard()
 
 let mouseState = false;
 
@@ -73,10 +71,14 @@ canvas.addEventListener('mousedown', () => {
     let position = getMousePos(canvas, event);
     let x = Math.floor(position.x/size)
     let y = Math.floor(position.y/size)
-    if(!eraser.checked) {
-        board[x+y*dimension].draw(color.value)
+    if(eraser.checked) {
+        //board[x+y*dimension].erase()
+        artboard.modifyPixel( x, y, {command: 'erase'} )            
+    } else if(lineToggle.checked)  {
+        line = new Line(x, y, artboard, dimension)        
     } else {
-        board[x+y*dimension].erase()
+        // board[x+y*dimension].draw(color.value)
+        artboard.modifyPixel( x, y, {command: 'draw', color: color.value })
     }
 })
 canvas.addEventListener('mouseup', () => {
@@ -88,21 +90,39 @@ canvas.addEventListener('mousemove', function(event) {
         let position = getMousePos(canvas, event);
         let x = Math.floor(position.x/size)
         let y = Math.floor(position.y/size)
-        if(!eraser.checked) {
-            board[x+y*dimension].draw(color.value)
+        if(eraser.checked) {
+            //board[x+y*dimension].erase()
+            artboard.modifyPixel(x, y, { command: 'ease' });            
+        } else if(lineToggle.checked)  {
+            line.draw(x, y, color.value)
         } else {
-            board[x+y*dimension].erase()
+            //board[x+y*dimension].draw(color.value)
+            artboard.modifyPixel( x, y, {command: 'draw', color: color.value })
         }
     }
     
 })
 
 function generateCode() {
+    generatedCode = `
+    void drawRect(int x, int y, int size, int r, int g, int b) {
+        glColor3ub(r, g, b);
+        glBegin(GL_QUADS);
+        glVertex2i(x, y);
+        glVertex2i(x, y-size);
+        glVertex2i(x+size, y-size);
+        glVertex2i(x+size, y);
+        glEnd();
+    }
+    `;
+
     for(var y = 0; y < dimension; y++) {
         for(var x = 0; x < dimension; x++) {
-            if(board[x+y*dimension].isSet()) {
-                console.log(board[x+y*dimension].getColor())
-                let color = hexToRgb(board[x+y*dimension].getColor())
+            if(artboard.isSet(x, y)) {
+                //console.log(artboard[x+y*dimension].getColor())
+                console.log(artboard.getColor(x, y))
+                //let color = hexToRgb(board[x+y*dimension].getColor())
+                let color = hexToRgb(artboard.getColor(x, y))
                 console.log(color)
                 generatedCode += `
     drawRect(${x*size}, ${dimensionSize-y*size}, ${size}, ${color.r}, ${color.g}, ${color.b});`
@@ -118,34 +138,8 @@ submit.addEventListener('click', (e) => {
     e.preventDefault();
     generateCode();
     document.getElementById('popup').style.display = 'block'
-    document.getElementById('codeViewer').innerHTML = generatedCode
+    document.getElementById('codeViewer').value = generatedCode
     console.log(generatedCode);
 })
 
-
-
-// for(var i = 0; i < 32; i++) {
-//     for(var j = 0; j < 32; j++) {
-//         console.log(j, i);
-//         let rnd = 250 + Math.random() * 5;
-//         c.fillStyle = `rgba(${rnd}, ${rnd}, ${rnd})`;
-//         //c.strokeStyle = '#dbdbdb';
-//         c.fillRect(i*16, j*16, 16, 16);
-//     }
-// }
-
-// function animateBoard() {
-//     requestAnimationFrame(animateBoard)
-//     c.clearRect(0, 0, 512, 512);
-//     for(var i = 0; i < 64; i++) {
-//         for(var j = 0; j < 64; j++) {
-//             console.log(j, i);
-//             let rnd = Math.random() * 255;
-//             c.fillStyle = `rgba(${rnd}, ${rnd}, ${rnd})`;
-//             //c.strokeStyle = '#dbdbdb';
-//             c.fillRect(i*8, j*8, 8, 8);
-//         }
-//     }
-// }
-// animateBoard()
 

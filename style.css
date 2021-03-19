@@ -3,7 +3,6 @@
     padding: 0;
     font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
 }
-
 body 
 {
     height: 100vh;
@@ -18,13 +17,14 @@ canvas {
     background-color: white;
 }
 .form {
-    left: 0;
-    top: 0;
     position: absolute;
+    left: 0;
+    top: 0;    
     height: 100px;
     width: 100vw;
     background-color: white;
     display:flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -46,6 +46,10 @@ form input {
     font-size: 1.5rem;
     display: none;
 }
+.popup textarea {
+    height: 80vh;
+    width: 80%;
+}
 .popup button {
     padding: 1rem 2rem 1rem 2rem;
     background-color: black;
@@ -58,4 +62,6 @@ form input {
 }
 .code {
     padding-top: 50px;
+    overflow-y: scroll;
+    font-size: .5em;
 }

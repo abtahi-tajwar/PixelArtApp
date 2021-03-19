@@ -32,12 +32,55 @@
     </style>
 </head>
 <body>
-    <form action="artboard.html">
-        <label for="pixels">Pixels</label>
-        <input type="number" id="pixels" name="pixels" value="32">
-        <label for="dimension">Dimension by pixel</label>
-        <input type="number" id="dimension" name="dimension" value="512">
-        <input type="submit">
+    <form action="artboard.html" id="settings_form">
+        <table>
+        <tr>
+            <td><label for="pixels">Pixels</label></td>
+            <td><input type="number" id="pixels" name="pixels" value="32"></td>
+        </tr>
+        <tr>
+            <td><label for="dimension">Dimension by pixel</label></td>
+            <td><input type="number" id="dimension" name="dimension" value="512"><br></td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" id="sheetmode" name="sheetmode">
+                <label for="sheetmode">Turn on sprite sheet mode</label></td>
+        </tr>
+        <tr id="sheetSizeXRow">
+            <!-- <td><label for="SheetSizeX">Sheet Size X</label></td>
+            <td><input type="number" id="sheetSizeX" name="sheetSizeX" value="8"></td> -->
+        </tr>
+        <tr id="sheetSizeYRow">
+            <!-- <td><label for="sheetSizeY">Sheet Size Y</label></td>
+            <td><input type="number" id="sheetSizeY" name="sheetSizeY" value="8"></td>         -->
+        </tr>
+        <tr>
+            <td><input type="submit"></td>
+        </tr>
+        </table>
     </form>
+
+    <script>
+        let sheetmode =  document.getElementById("sheetmode")
+        document.getElementById("sheetmode").addEventListener('change', () => {
+            console.log(sheetmode.value);
+            if(sheetmode.checked !== true) {
+                document.getElementById('settings_form').action = 'artboard.html';
+                document.getElementById("sheetSizeXRow").innerHTML = '';
+                document.getElementById("sheetSizeYRow").innerHTML = '';
+            } else {
+                document.getElementById('settings_form').action = 'spriteSheet.html';
+                document.getElementById("sheetSizeXRow").innerHTML = `
+                        <td><label for="SheetSizeX">Sheet Size X</label></td>
+                    <td><input type="number" id="sheetSizeX" name="sheetSizeX" value="8"></td>
+                `;
+                document.getElementById("sheetSizeYRow").innerHTML = `
+                    <td><label for="SheetSizeY">Sheet Size Y</label></td>
+                    <td><input type="number" id="sheetSizeY" name="sheetSizeY" value="8"></td>                    
+                `;
+            }
+        })
+    </script>
+        
 </body>
 </html>

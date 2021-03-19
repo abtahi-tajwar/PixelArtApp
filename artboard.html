@@ -14,22 +14,25 @@
     <div class="popup" id="popup">
         <p>Please Copy the code below to your main.cpp</p>
         <button>Close</button>
-        <button onclick="copyCode()">Copy Code</button>
-        <div class="code"><pre><code id="codeViewer"></code></pre></div>
+        <div class="code"><textarea id="codeViewer" height="500px" width="500px" id="generatedCode"></textarea></div>
     </div>
     <div class="form">
         <form action="">
             <label for="color">Select Color</label>
             <input id="color" type="color" name="color">
             <label for="erase">Check to turn of eraser mode</label>
-            <input id="erase" type="checkbox">
+            <input id="erase" type="checkbox" name="erase">
+            <label for="line">Check to turn of line mode</label>
+            <input id="line" type="checkbox" name="line">
             <input type="submit" value="Generate Code" id="submit">
         </form>
     </div>
 
     <canvas height="512" width="512"></canvas>
     
-    <script src="pixel.js"></script>
-    <script src="canvas.js"></script>
+    <script src="js/pixel.js"></script>
+    <script src="js/line.js"></script>
+    <script src="js/artboard.js"></script>
+    <script src="js/canvas.js"></script>
 </body>
 </html>

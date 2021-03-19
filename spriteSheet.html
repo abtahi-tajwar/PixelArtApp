@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" href="icon/comic-book.png" type="image/icon type">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="spriteSheetStyle.css">
+
+    <title>Pixel Art App</title>
+</head>
+<body>
+    <div class="popup" id="popup">
+        <p>Please Copy the code below to your main.cpp</p>
+        <button>Close</button>
+        <div class="code"><textarea id="codeViewer" height="500px" width="500px" id="generatedCode"></textarea></div>
+    </div>
+    <div class="sprteSheetForm">
+        <div class="draw_form">
+            <form action="">
+                <label for="color">Select Color</label>
+                <input id="color" type="color" name="color">
+                <label for="erase">Check to turn of eraser mode</label>
+                <input id="erase" type="checkbox" name="erase">
+                <label for="line">Check to turn of line mode</label>
+                <input id="line" type="checkbox" name="line">
+            </form>
+        </div>
+        <div class="selector_form">
+            <form action="" id="selectSheet">
+                <label for="sheetX">Sheet X index: </label>
+                <input type="number" value="1" name="sheetX" id="sheetX">
+                <label for="sheetY">Sheet Y index: </label>
+                <input type="number" value="1" name="sheetY" id="sheetY">
+                <button name="go" id="go">Go to the Selected Sheet</button>
+                <button name="prev" id="prev">Previous</button>
+                <button name="next" id="next">Next</button>                        
+            </form>
+        </div>
+        <div class="opacity_slider">
+            <form action="" id="selectSheet">
+                <input type="range" min="0" max="100" value="100" id="opacitySlider" name="opacitySlider">
+                <input type="text" value="100" name="opacityText" id="opacityText">
+                <button id="generate">Generate Sprite Sheet</button>                   
+            </form>
+        </div>
+    </div>
+
+    <canvas height="512" width="512" id="prevCanvas"></canvas>   
+    <canvas height="512" width="512" id="currentCanvas"></canvas>
+
+    <div class="final-canvas">
+        <canvas height="512" width="512" id="finalCanvas"></canvas>
+    </div>    
+    <script src="js/pixel.js"></script>
+    <script src="js/line.js"></script>
+    <script src="js/artboard.js"></script>
+    <script src="js/spriteSheet.js"></script>
+    <script src="js/drawSpriteSheet.js"></script>
+</body>
+</html>
