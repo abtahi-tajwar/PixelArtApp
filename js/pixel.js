@@ -23,6 +23,12 @@ class Pixel {
         this.c.fillRect(this.x, this.y, this.size, this.size)
         this.set = true
     }
+    redraw(color = this.color) {
+        this.color = color
+        this.c.clearRect(this.x, this.y, this.size, this.size)
+        this.c.fillStyle = color
+        this.c.fillRect(this.x, this.y, this.size, this.size)
+    }
     save(color) {
         this.color = color;
     }

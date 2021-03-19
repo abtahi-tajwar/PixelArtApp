@@ -1,31 +1,22 @@
 class Artboard {
-    constructor(dimension = 512, pixel = 32, c, color = undefined) {
+    constructor(dimension = 512, pixel = 32, c) {
         this.dimension = dimension;
         this.pixel = pixel;
         this.size = this.dimension/this.pixel;
         this.board = [];
-
         this.primaryColor = '#fafafa';
         this.secondaryColor = '#dedede';
-        if(color === undefined) {
-            for(let i = 0; i < this.pixel; i++) {
-                for(let j = 0; j < this.pixel; j++) {
-                    if((i+j)%2 == 0) {
-                        this.board.push(new Pixel(j*this.size, i*this.size, this.size, this.primaryColor, c))
-                    } else {
-                        this.board.push(new Pixel(j*this.size,  i*this.size, this.size, this.secondaryColor, c))
-                    }
-                    
+
+        for(let i = 0; i < this.pixel; i++) {
+            for(let j = 0; j < this.pixel; j++) {
+                if((i+j)%2 == 0) {
+                    this.board.push(new Pixel(j*this.size, i*this.size, this.size, this.primaryColor, c))
+                } else {
+                    this.board.push(new Pixel(j*this.size,  i*this.size, this.size, this.secondaryColor, c))
                 }
+                
             }
-        } else {
-            for(let i = 0; i < this.pixel; i++) {
-                for(let j = 0; j < this.pixel; j++) {
-                    this.board.push(new Pixel(j*this.size, i*this.size, this.size, color, c))
-                }
-            }
-        }
-        
+        }       
     }
     initBoard()
     {
@@ -42,7 +33,7 @@ class Artboard {
     }
     drawBoard() {
         for(let i = 0; i < this.pixel*this.pixel; i++) {            
-            this.board[i].draw();
+            this.board[i].redraw();
         }
     }
     modifyPixel(x, y, params)

@@ -23,7 +23,7 @@ let eraserMode = true;
 
 let line
 
-const artboard = new Artboard(dimensionSize, dimension);
+const artboard = new Artboard(dimensionSize, dimension, c);
 artboard.initBoard();
 
 function getMousePos(canvas, evt) {
