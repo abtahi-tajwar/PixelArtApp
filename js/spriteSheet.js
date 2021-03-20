@@ -108,7 +108,7 @@ canvas.addEventListener('mousemove', function(event) {
 
 // Artboard change logic
 function loadBoard(x, y) {
-    console.log(sheetSizeX);
+    //console.log(sheetSizeX);
     currentSheet = sheets[y][x]
     if(x == 0 && y == 0) {
         prevSheet = prevSheets[y][x]
@@ -123,9 +123,45 @@ function loadBoard(x, y) {
 }
 goButton.addEventListener('click', (e) => {
     e.preventDefault();
-    console.log(sheetX)
+    //console.log(sheetX)
     //loadBoard(document.getElementById('sheetX').value - 1, document.getElementById('sheetY').value - 1);
     loadBoard(sheetX, sheetY);
+})
+nextButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    if(sheetX >= sheetSizeX-1 && sheetY != sheetSizeY-1) {
+        sheetX = 0;
+        sheetY = sheetY + 1;
+        document.getElementById('sheetX').value = sheetX + 1;
+        document.getElementById('sheetY').value = sheetY + 1;
+        loadBoard(sheetX, sheetY)
+        
+    } else if(sheetY < sheetSizeY && sheetX < sheetSizeX-1) {
+        sheetX = sheetX + 1;
+        sheetY = sheetY;
+        document.getElementById('sheetX').value = sheetX + 1;
+        document.getElementById('sheetY').value = sheetY + 1;
+        loadBoard(sheetX, sheetY)
+    }
+
+})
+prevButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    if(sheetX <= 0 && sheetY != 0) {
+        sheetX = sheetSizeX - 1;
+        sheetY = sheetY - 1;
+        document.getElementById('sheetX').value = sheetX + 1;
+        document.getElementById('sheetY').value = sheetY + 1;
+        loadBoard(sheetX, sheetY)
+        
+    } else if(sheetY >= 0 && sheetX > 0) {
+        sheetX = sheetX - 1;
+        sheetY = sheetY;
+        document.getElementById('sheetX').value = sheetX + 1;
+        document.getElementById('sheetY').value = sheetY + 1;
+        loadBoard(sheetX, sheetY)
+    }
+
 })
 //Manage opacity of artbaord
 canvas.style.opacity = 1;
@@ -144,4 +180,11 @@ document.getElementById('sheetX').addEventListener('change', () => {
 })
 document.getElementById('sheetY').addEventListener('change', () => {
     sheetY = document.getElementById('sheetY').value - 1;
+})
+
+//Copy from last sheet
+document.getElementById('copy').addEventListener('click', (e) => {
+    e.preventDefault()
+    currentSheet.copyBoard(prevSheet);
+    prevSheets[sheetY][sheetX].copyBoard(prevSheet);
 })

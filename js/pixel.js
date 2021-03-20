@@ -16,12 +16,12 @@ class Pixel {
     getColor() {
         return this.color
     }
-    draw(color = this.color) {
+    draw(color = this.color, set = true) {
         this.color = color
         this.c.clearRect(this.x, this.y, this.size, this.size)
         this.c.fillStyle = color
         this.c.fillRect(this.x, this.y, this.size, this.size)
-        this.set = true
+        this.set = set
     }
     redraw(color = this.color) {
         this.color = color
@@ -31,9 +31,11 @@ class Pixel {
     }
     save(color) {
         this.color = color;
+        this.set = true;
     }
     removeSaved() {
         this.color = this.defaultColor;
+        this.set = false;
     }
     erase() {
         this.c.clearRect(this.x, this.y, this.size, this.size)

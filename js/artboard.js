@@ -31,9 +31,14 @@ class Artboard {
             }
         }
     }
-    drawBoard() {
-        for(let i = 0; i < this.pixel*this.pixel; i++) {            
+    drawBoard() {       
+        for(let i = 0; i < this.pixel*this.pixel; i++) {          
             this.board[i].redraw();
+        }
+    }
+    copyBoard(sheet) {
+        for(let i = 0; i < this.pixel*this.pixel; i++) {           
+            this.board[i].draw(sheet.getPixelInfo(i).color, sheet.getPixelInfo(i).set);
         }
     }
     modifyPixel(x, y, params)
