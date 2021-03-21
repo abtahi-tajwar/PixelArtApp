@@ -131,7 +131,27 @@
 
 .final-canvas {
   position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
   display: none;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-shadow: 22px 11px 17px -16px var(--primary-gray), -15px 17px 17px -16px var(--primary-gray);
+          box-shadow: 22px 11px 17px -16px var(--primary-gray), -15px 17px 17px -16px var(--primary-gray);
+}
+
+.final-canvas canvas {
+  -webkit-box-shadow: 22px 11px 17px -16px var(--primary-gray), -15px 17px 17px -16px var(--primary-gray);
+          box-shadow: 22px 11px 17px -16px var(--primary-gray), -15px 17px 17px -16px var(--primary-gray);
+}
+
+.final-canvas button {
+  padding: 10px;
+  width: 100px;
 }
 
 .right-nav {
@@ -357,5 +377,12 @@
 
 .right-nav .generate:hover {
   background-color: var(--dark-gray2);
+}
+
+@media only screen and (max-width: 1300px) {
+  .container .canvas-area canvas {
+    height: 400px;
+    width: 400px;
+  }
 }
 /*# sourceMappingURL=spriteSheet.css.map */
