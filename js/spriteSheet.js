@@ -39,15 +39,15 @@ let opacity = document.getElementById('opacityText').value;
 //Initializing sheets
 const sheets = [];
 const prevSheets = [];
-for(let i = 0; i < sheetSizeX; i++) {
+for(let i = 0; i < sheetSizeY; i++) {
     sheets[i] = new Array();
-    for(let j = 0; j < sheetSizeY; j++) {
+    for(let j = 0; j < sheetSizeX; j++) {
         sheets[i].push(new Artboard(dimensionSize, pixels, c))
     }
 }
-for(let i = 0; i < sheetSizeX; i++) {
+for(let i = 0; i < sheetSizeY; i++) {
     prevSheets[i] = new Array();
-    for(let j = 0; j < sheetSizeY; j++) {
+    for(let j = 0; j < sheetSizeX; j++) {
         prevSheets[i].push(new Artboard(dimensionSize, pixels, pc))
     }
 }
@@ -92,7 +92,7 @@ canvas.addEventListener('mousemove', function(event) {
         let y = Math.floor(position.y/size)
         if(eraser.checked) {
             //board[x+y*dimension].erase()
-            currentSheet.modifyPixel(x, y, { command: 'ease' });
+            currentSheet.modifyPixel(x, y, { command: 'erase' });
             prevSheets[sheetY][sheetX].savePixelInfo( x, y, {command: 'erase'} )            
         } else if(lineToggle.checked)  {
             line.draw(x, y, color.value)

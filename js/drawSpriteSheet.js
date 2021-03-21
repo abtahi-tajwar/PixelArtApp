@@ -17,13 +17,7 @@ function generateSpriteSheet() {
     for(let x = 0; x < sheetSizeX; x++) {
         for(let y = 0; y < sheetSizeY; y++) {
             for(let i = 0; i < pixels*pixels; i++) {
-                //console.log(sheets[x][y])
                 drawToSheet(sheets[y][x], x, y, i)
-                // const info = sheets[y][x].getPixelInfo(i)
-                //     console.log(x*pixelSize*pixels + i%32*pixelSize, y*pixelSize*pixels + Math.floor(i/32))
-                //     fc.clearRect(x*64 + i%32*pixelSize, y*64 + Math.floor(i/32)*pixelSize, pixelSize, pixelSize);
-                //     fc.fillStyle = info.color
-                //     fc.fillRect(x*64 + i%32*pixelSize, y*64 + Math.floor(i/32)*pixelSize, pixelSize, pixelSize);
             }
         }
         
@@ -44,6 +38,11 @@ function drawToSheet(sheet, x, y, i) {
 }
 document.getElementById('generate').addEventListener('click', (e) => {
     e.preventDefault()
+    finalSpriteSheet.style.transform = 'scale('+512/sheetWidth+','+512/sheetWidth+')'
     document.querySelector('.final-canvas').style.display = 'flex';
     generateSpriteSheet()
+})
+document.getElementById('close_preview').addEventListener('click', (e) => {
+    e.preventDefault()
+    document.querySelector('.final-canvas').style.display = 'none';
 })
