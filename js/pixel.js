@@ -24,6 +24,7 @@ class Pixel {
         this.set = set
     }
     redraw(color = this.color) {
+        console.log(this.set)
         this.color = color
         this.c.clearRect(this.x, this.y, this.size, this.size)
         this.c.fillStyle = color

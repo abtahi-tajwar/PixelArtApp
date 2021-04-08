@@ -75,7 +75,7 @@ canvas.addEventListener('mousedown', () => {
         currentSheet.modifyPixel( x, y, {command: 'erase'} )
         prevSheets[sheetY][sheetX].savePixelInfo( x, y, {command: 'erase'} )     
     } else if(lineToggle.checked)  {
-        line = new Line(x, y, currentSheet, dimension)        
+        line = new Line(x, y, currentSheet, prevSheets[sheetY][sheetX], dimension)        
     } else {
         // board[x+y*dimension].draw(color.value)
         currentSheet.modifyPixel( x, y, {command: 'draw', color: color.value })

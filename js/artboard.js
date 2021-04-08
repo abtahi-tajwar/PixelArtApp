@@ -1,3 +1,12 @@
+function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+}
+  
+function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
 class Artboard {
     constructor(dimension = 512, pixel = 32, c) {
         this.dimension = dimension;
@@ -35,6 +44,54 @@ class Artboard {
         for(let i = 0; i < this.pixel*this.pixel; i++) {          
             this.board[i].redraw();
         }
+    }
+    drawImage(imgData, width, height, pixelSize)
+    {
+        let data = [];
+        for(let y = 0; y < height; y++) {
+            let row = [];
+            for(let x = 0; x < width; x++) {
+                let r = imgData[(y * 4 * width) + (x * 4)];
+                let g = imgData[(y * 4 * width) + (x * 4 + 1)];
+                let b = imgData[(y * 4 * width) + (x * 4 + 2)];
+                row.push({r, g, b})
+            }
+            data.push(row);
+        }
+        let pixelatedData = [];
+        for(let y = 0; y < height; y += pixelSize) {
+            let row = [];
+            for(let x = 0; x < width; x += pixelSize) {
+                let r = 0, g = 0, b = 0;
+                for(let j = y; j < y + pixelSize; j++) {
+                    if(j >= height) {
+                        break;
+                    }
+                    for(let i = x; i < x + pixelSize; i++) {
+                        //console.log(j);
+                        r += data[j][i].r;
+                        g += data[j][i].g;
+                        b += data[j][i].b;
+                    }
+                }                
+                r = r/(pixelSize*pixelSize);
+                g = g/(pixelSize*pixelSize);
+                b = b/(pixelSize*pixelSize);
+                row.push({r, g, b});
+            }
+            pixelatedData.push(row);
+        }
+        //console.log(pixelatedData)
+          
+        
+        pixelatedData.forEach((row, y) => {
+            row.forEach((cell, x) => {
+                const hex =  rgbToHex(Math.round(cell.r), Math.round(cell.g), Math.round(cell.b))
+                console.log(hex)
+                this.board[x + y*dimension].draw(hex)
+            })
+        })
+
     }
     copyBoard(sheet) {
         for(let i = 0; i < this.pixel*this.pixel; i++) {           

@@ -1,9 +1,10 @@
 class Line {
-    constructor(sx, sy, artboard, dimension) {
+    constructor(sx, sy, artboard, prevArtboard, dimension) {
         this.sx = sx
         this.sy = sy
         this.linePoints = []
         this.artboard = artboard
+        this.prevArtboard = prevArtboard
         this.dimension = dimension
     }
     init(sx, sy) {
@@ -52,6 +53,7 @@ class Line {
         this.linePoints.forEach(item => {
             //this.board[Math.round(item.x) + Math.round(item.y) * this.dimension].draw(color)
             this.artboard.modifyPixel(Math.round(item.x), Math.round(item.y), {command: 'draw', color: color })
+            this.prevArtboard.modifyPixel(Math.round(item.x), Math.round(item.y), {command: 'draw', color: color })
         })
     }
 }
