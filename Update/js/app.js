@@ -27,6 +27,12 @@ document.querySelectorAll('input[type=checkbox]').forEach(item => {
     })
 })
 
+//Board Properties
+const refImage = document.getElementById("refImage")
+refImage.style.width = canvas.width+"px"
+const opacitySlider = document.getElementById("opacitySlider")
+const opacityText = document.getElementById("opacityText")
+
 //Accessing code generator tools
 const generateButton = document.getElementById("generate")
 const popup = document.getElementById("popup")
@@ -159,6 +165,18 @@ function selectElement(elemN)
     })
     document.querySelector("#layer"+elemN).style.backgroundColor = '#F5F5F5';
 }
+
+//Manage opacity
+opacitySlider.addEventListener('change', (e) => {
+    opacityText.value = opacitySlider.value
+    refImage.style.opacity = e.target.value / 100
+    
+})
+opacityText.addEventListener('change', (e) => {
+    opacitySlider.value = opacityText.value
+    refImage.style.opacity = e.target.value / 100    
+})
+
 
 //Code generation
 generateButton.addEventListener('click', () => {
