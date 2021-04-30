@@ -61,6 +61,8 @@ let drawn = false;
 let lineNumber = 0;
 let polyNumber = 0;
 let polyDrawMode = false;
+let ctrl = false;
+let templine;
 document.addEventListener('mousemove', (e) => {
     pos = getMousePos(refCanvas, e)
     mouse.x = pos.x;
@@ -72,11 +74,27 @@ document.addEventListener('keydown', (e) => {
         shiftDown = true;
         console.log("ShiftDown", shiftDown)
     }
+    if(e.ctrlKey) {
+        ctrl = true;
+    }
 })
 document.addEventListener('keyup', (e) => {
     if(e.which === 16) {
         shiftDown = false;
         console.log("ShiftDown", shiftDown)
+    }
+    if(e.which === 17) {
+        ctrl = false;
+    }
+    if(e.which === 90) {
+        if(ctrl) {
+            polyDrawMode = false;
+            elements.pop();
+            artboard.DrawMainBoard(elements);
+            artboard.ClearTemp();
+            // var c = refCanvas.getContext("2d");
+            // c.clearRect(0, 0, refCanvas.width, refCanvas.height);
+        }
     }
 })
 tempCanvas.addEventListener('mousedown', () => {
@@ -96,8 +114,9 @@ tempCanvas.addEventListener('mousedown', () => {
         //console.log(shiftDown)
         //Handles the starting of the polygon drawing        
         if(shiftDown && polyDrawMode) {
+            artboard.ClearTemp();
             polyDrawMode = false;
-            currentElement.end(tempCanvas);
+            currentElement.end(mainCanvas);
             currentElement.draw(mainCanvas);
             document.getElementById('layers_panel').innerHTML += `
             <div class="layer_elem" id="layer${elements.length - 1}" onclick="selectElement(${elements.length - 1})">
@@ -107,13 +126,18 @@ tempCanvas.addEventListener('mousedown', () => {
         }
         //Check if user started to drawing polygon or not
         if(!shiftDown && !polyDrawMode) {
+            templine = new Line(mouse.x, mouse.y, mouse.x, mouse.y, '#333333');
             polyDrawMode = true;
             elements.push({name: "Poly"+polyNumber++, elem: new Polygon(mouse.x, mouse.y, elemColor)});
             currentElement = elements[elements.length - 1].elem
-            currentElement.init(tempCanvas, mouse.x, mouse.y)
+            currentElement.init(mainCanvas, mouse.x, mouse.y)
+            artboard.ClearTemp();
+            
         } else {
             if(!shiftDown) {
-                currentElement.addPoint(tempCanvas, mouse.x, mouse.y);
+                templine = new Line(mouse.x, mouse.y, mouse.x, mouse.y, '#333333');
+                currentElement.addPoint(mainCanvas, mouse.x, mouse.y);
+                artboard.ClearTemp();                
             }
             
             //currentElement.draw(tempCanvas)
@@ -152,6 +176,13 @@ document.addEventListener('mousemove', (e) => {
     if(mouseDown && currentElement !== null && selectedTool !== 'poly') {
         drawn = true;        
         artboard.UpdateTempElement(currentElement, { x1: mouse.x, y1: mouse.y });
+    }
+    else if(selectedTool === 'poly' && polyDrawMode) {
+        console.log("Moving")
+        templine.update(tempCanvas, {
+            x1: mouse.x,
+            y1: mouse.y
+        })
     }
     
 })

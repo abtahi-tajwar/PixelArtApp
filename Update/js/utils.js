@@ -27,3 +27,10 @@ function pointDistance(x, y, x1, y1)
     const yDist = y - y1;
     return Math.sqrt(xDist*xDist + yDist*yDist);
 }
+function normalize(x, y, w, h)
+{
+    pos = {};
+    pos.x = Math.round(((x - w / 2) / (w / 2)) * 100)/100;
+    pos.y = -Math.round(((y - h / 2) / (h / 2)) * 100)/100;
+    return pos;
+}

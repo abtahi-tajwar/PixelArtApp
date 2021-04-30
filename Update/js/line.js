@@ -78,12 +78,14 @@ class Line
     }
     openGLOutput()
     {
+        const startPoint = normalize(Math.floor(this.x), Math.floor(canvas.height - this.y), canvas.width, canvas.height);
+        const endPoint = normalize(Math.floor(this.x1), Math.floor(canvas.height - this.y1), canvas.width, canvas.height);
         const rgb = hexToRgb(this.color)
         this.openglCode += `
             glBegin(GL_LINES);
             glColor3ub(${rgb.r},${rgb.g},${rgb.b});
-                glVertex2i(${Math.floor(this.x)}, ${Math.floor(canvas.height - this.y)});
-                glVertex2i(${Math.floor(this.x1)}, ${Math.floor(canvas.height - this.y1)});
+                glVertex2f(${startPoint.x}f, ${startPoint.y}f);
+                glVertex2f(${endPoint.x}f, ${endPoint.y}f);
             glEnd();
         `
         return this.openglCode
